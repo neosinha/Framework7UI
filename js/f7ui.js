@@ -118,13 +118,53 @@ var Framework7UI  = function () {
 		
 		//click property
 		if (prop['onclick']) {
-			//ax.setAttribute('onclick', prop['onclick']);
+			ax.setAttribute('onclick', prop['onclick']);
 		}
-		//ax.setAttribute('href', 'javascript:null');
+		ax.setAttribute('href', 'javascript:null');
 		el.appendChild(ax);
 		
 		return el;
 	}
+	
+	
+	//creates a content block and adds elements
+	this.contentBlock = function(id, elements) {
+		//<div class="content-block">
+        //<div class="content-block-inner" id="contentblock1-inner">
+		var elx  = this.element('div', id);
+		elx.setAttribute('class', 'content-block'); 
+		
+		var ielx = this.element('div', 'contentblock'+id);
+		ielx.setAttribute('class', 'content-block-inner'); 
+		for (el in elements) {
+			e = elements[el]; 
+			ielx.appendChild(e);
+		}
+		
+		elx.appendChild(ielx);
+		
+		return elx;
+	}
+	
+	//creates a segmeneted button control
+	this.segmentControl = function (id, theme, buttons) {
+		
+		var elx = this.element('p', id);
+		bclass = 'button-row'; 
+		if (theme) {
+			blcass = bclass + ' theme';
+		}
+		elx.setAttribute('class', bclass);
+		for (butn in buttons) {
+			button = buttons[butn]; 
+			elx.appendChild(button);
+		}
+		
+		return elx; 
+	}
+	
+	
+	
 	
 	//Appends the element to the view
 	this.appendToView = function ( elm ) {
@@ -135,6 +175,110 @@ var Framework7UI  = function () {
 		
 		return el;
 	}
+	
+	
+	/* tableView with
+	 * listProp = {'blockname'  : '', 
+	 *			   'listFunction': '',   
+	 *			   'type' : 'media', 
+	 *			   'sortable' : true/false 
+	 * 			}
+	 * 
+	 * listArr = [ { 'media' : '', 
+	 * 				 'title' : '' ,
+	 * 				 'after' : '' } 
+	 * 
+	 * 			  ]
+	 */
+	this.tableView = function(id, listBlock ,listArr) {
+		
+		var tbl = this.element('div', id);
+		//process listblock
+		bclass = 'list-block';
+		if (listBlock['type']) {
+			
+		}
+		tbl.setAttribute('class', bclass);
+		
+		
+		if (listBlock['blockname']) {
+			var divx = this.element('div', 'listblocklabel'+id);
+			divx.setAttribute('class', 'list-block-label');
+			divx.innerHTML = listBlock['blockname'];
+			tbl.appendChild(divx);
+		}
+		
+		ul = this.element('ul', null);
+		tbl.appendChild(ul);
+		
+		for (x in listArr) {
+			li = this.element('li', null);
+			
+			listEl = listArr[x]; 
+			a = this.element('a', 'listel'+id+x);
+			a.setAttribute('class', 'item-link item-content');
+			fn = listBlock['listFunction'];
+			if (fn) {
+				a.setAttribute('onclick', fn+'(\''+x+'\');');
+			}
+			//media
+			if (listEl['media']) {
+				media = this.element('div', 'itemmedia'+id+x);
+				media.setAttribute('class', 'item-media');
+				
+				icon = this.element('i', null);
+				icon.setAttribute('class', 'f7-icons');
+				icon.innerHTML = listEl['media'];
+				
+				media.appendChild(icon);
+				a.appendChild(media);
+			}
+			
+			if (listEl['title']) {
+				var divx = this.element('div', 'listinner-'+id+x);
+				divx.setAttribute('class', 'item-inner');
+				
+				var dtitle = this.element('div', 'listtitle-'+id+x);
+				dtitle.setAttribute('class', 'item-title');
+				dtitle.innerHTML = listEl['title']; 
+				
+				divx.appendChild(dtitle);
+				
+				if (listEl['after']) {
+					var dafter = this.element('div', 'listafter-'+id+x);
+					dafter.setAttribute('class', 'item-after');
+					dafter.innerHTML = listEl['after'];
+					divx.appendChild(dafter);
+				}
+				
+				a.appendChild(divx);
+			}
+			
+			li.appendChild(a);
+			
+			ul.appendChild(li);
+		}
+		
+		
+		//content block
+		//cbl = this.contentBlock('contenblk'+id, [tbl]);
+		
+		return tbl;
+	}
+	
+	
+	/*
+	 * tabProp = { 'tabFunc' }
+	 * tabEl =  { 'icon', 
+	 * 			  'label'
+	 * 			}
+	 * */
+	this.tabBar = function (id, tabProp, tabEl) {
+		
+		
+		
+	}
+	
 	
 }
 
