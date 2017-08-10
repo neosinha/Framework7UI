@@ -40,7 +40,7 @@ var Framework7UI  = function () {
 	//navbar title component 
 	this.navbarLeft = function ( title ) {
 		//
-		el = document.getElementById('navbar-left');
+		var el = document.getElementById('navbar-left');
 		if (title) {
 			if (typeof title == 'string') {
 				el.innerHTML = title; 
@@ -55,7 +55,7 @@ var Framework7UI  = function () {
 	//navbar title component 
 	this.navbarRight = function ( title ) {
 		//
-		el = document.getElementById('navbar-right');
+		var el = document.getElementById('navbar-right');
 		if (title) {
 			if (typeof title == 'string') {
 				el.innerHTML = title; 
@@ -335,14 +335,121 @@ var Framework7UI  = function () {
 	 */
 	this.tabs = function(id, tabArr) {
 		
+		/*
+		<div class="buttons-row">
+	      <!-- Link to 1st tab, active -->
+	      <a href="#tab1" class="tab-link active button">Tab 1</a>
+	      <!-- Link to 2nd tab -->
+	      <a href="#tab2" class="tab-link button">Tab 2</a>
+	      <!-- Link to 3rd tab -->
+	      <a href="#tab3" class="tab-link button">Tab 3</a>
+	    </div>
+	    */
+		
 		var tabbar = this.element('div', id);
 		tabbar.setAttribute('class', 'buttons-row');
 		
+		var tabarea = this.element('div', 'tabarea'+id);
+		tabarea.setAttribute('class', 'tabs');
+		
+		for (x in tabArr) {
+			tab = tabArr[x]; 
+			var a = this.element('a', 'tabel'+x);
+			if (x == 0)
+				a.setAttribute('class', 'tab-link button active');
+			else
+				a.setAttribute('class', 'tab-link button');
+			
+			a.innerHTML = tab['header'].trim();
+			a.setAttribute('href', '#tabview'+x);
+			tabbar.appendChild(a);
+			
+			
+			tabview = this.element('div', 'tabview'+x);
+			if (x == 0)
+				tabview.setAttribute('class', 'tab active');
+			else
+				tabview.setAttribute('class', 'tab');
+			
+			tabview.appendChild(tab['content']);
+			tabarea.appendChild(tabview);
+		}
+		
+		cblock = this.element('div', 'contentblock'+id); 
+		cblock.setAttribute('class', 'content-block');
+		cblock.appendChild(tabbar);
+		cblock.appendChild(tabarea);
+		
+		return cblock; 
+	}
+	
+	//creates a new p element
+	this.p = function(id, content) {
+		px = this.element('p', id);
+		if (typeof content == 'string') {
+			px.innerHTML = content; 
+		} else {
+			px.appendChild(content);
+		}
+		
+		return px; 
 	}
 	
 	
-	
-	
+	/*
+	 * cardEl = {
+	 * 	'header' :, 
+	 *  'content': , 
+	 *  'footer':
+	 *  'class' :  
+	 * 	}
+	 */
+	this.card = function(id, cardEl) {
+		
+		var crd = this.element('div', id);
+		crd.setAttribute('class', 'card');
+		
+		//check and add header
+		if (cardEl['header']) {
+			var hdr = this.element('div', 'cardheader'+id);
+			hdr.setAttribute('class', 'card-header');
+			if (typeof cardEl['header'] == 'string') {
+				hdr.innerHTML = cardEl['header']; 
+			} else {
+				hdr.appendChild(cardEl['header']);
+			}
+			
+			crd.appendChild(hdr);
+		}
+		
+		
+		//check and add content
+		if (cardEl['content']) {
+			var cnt = this.element('div', 'cardcontent'+id);
+			cnt.setAttribute('class', 'card-content');
+			if (typeof cardEl['content'] == 'string') {
+				cnt.innerHTML = cardEl['content']; 
+			} else {
+				cnt.appendChild(cardEl['content']);
+			}
+			crd.appendChild(cnt);
+		}
+		
+		
+		//check and add footer
+		if (cardEl['footer']) {
+			var ftr = this.element('div', 'cardcontent'+id);
+			ftr.setAttribute('class', 'card-footer');
+			if (typeof cardEl['footer'] == 'string') {
+				ftr.innerHTML = cardEl['footer']; 
+			} else {
+				ftr.appendChild(cardEl['footer']);
+			}
+			crd.appendChild(ftr);
+		}
+		
+		return crd; 
+	}
 	
 }
 

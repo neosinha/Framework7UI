@@ -18,24 +18,9 @@ function appInit() {
 	cb = ui.contentBlock('contentblock1', buttons);
 	ui.appendToView(cb);
 	
-	/*listProp = {'blockname'  : '', 
-			 *			   'list function': '',   
-			 *			   'type' : 'media', 
-			 *			   'sortable' : true/false 
-			 * 			}
-			 * 
-			 * listArr = [ { 'media' : '', 
-			 * 				 'title' : '' ,
-			 * 				 'after' : '' } 
-			 * 
-			 * 			  ]
-	*/
-	listElements = Array();
-	/*
-	listElements.push({'media' : 'home', 'title' : 'Test1', 'after': '1'});
-	listElements.push({'media' : 'home_fill', 'title' : 'Test2', 'after': '2'});
-	listElements.push({'media' : 'heart', 'title' : 'Test3', 'after': '3'});
-	*/
+	
+	//TableView 
+	listElements = new Array();
 	listElements.push({'title' : 'Test1', 'after': '1'});
 	listElements.push({'title' : 'Test2', 'after': '2'});
 	listElements.push({'title' : 'Test3', 'after': '3'});
@@ -43,11 +28,37 @@ function appInit() {
 							listElements); 
 	ui.appendToView(tblview);
 	
+	//Tabs
+	tabarr = new Array(); 
+	tabarr.push({'header': 'Tab1', 'content' : ui.p(null, 'Cool Stuff') });
+	tabarr.push({'header': 'Tab2', 'content' : ui.p(null, 'Cool Stuff Also') });
+	tab1 = ui.tabs('uitabs1', tabarr);
+	ui.appendToView(tab1);
+	
+	
+	
+	//card
+	b1 = ui.createButton({'inner' : 'Card Button', 'type': 'button-fill color-green', 'onclick': 'clickTester();'} );
+	card1 = ui.card('card1', {'header': 'Card Header', 'content': b1, 'footer': 'Footer Text'}); 
+	ui.appendToView(card1);
+	
+	//card2
+	tblview = ui.tableView('tableview2', {'blockname' : 'Nice List', 'listFunction' : 'testFunc'}, 
+			listElements); 
+	b1 = ui.createButton({'inner' : 'Card Button', 'type': 'button-fill color-pink', 'onclick': 'clickTester();'} );
+	card1 = ui.card('card2', {'header': 'Card Header', 'content': tblview, 'footer': 'Nice Text'}); 
+	ui.appendToView(card1);
+	
+	
+	//Bottom ToolBar
 	btabs = Array(); 
 	btabs.push({'icon': 'favorites', 'label' : 'Favor'});
 	btabs.push({'icon': 'drawers', 'label' : 'Files'});
 	btabs.push({'icon': 'home', 'label' : 'Home'});
 	ui.bottomToolbar({'tabFunc': 'clickTester'}, btabs);
+	
+	
+	
 }
 	
 function testFunc(listId) {
