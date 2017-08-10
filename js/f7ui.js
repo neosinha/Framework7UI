@@ -271,13 +271,77 @@ var Framework7UI  = function () {
 	 * tabProp = { 'tabFunc' }
 	 * tabEl =  { 'icon', 
 	 * 			  'label'
+	 * 			  ''
 	 * 			}
 	 * */
-	this.tabBar = function (id, tabProp, tabEl) {
+	this.bottomToolbar = function (tabProp, tabArr) {
+		var toolbar = document.getElementById('toolbararea');
+		toolbar.innerHTML = ''; 
 		
 		
+		toolbar.setAttribute('class', 'toolbar tabbar tabbar-labels'); 
+		
+		
+		var tbar = this.element('div', 'toolbarareainner');
+		tbar.setAttribute('class', 'toolbar-inner'); 
+		
+		for (x in tabArr) {
+			tabEl = tabArr[x]; 
+			
+			var a = this.element('a', 'tabitem'+x);
+			if (x == 0){
+				a.setAttribute('class', 'tab-link active');
+			} else {
+				a.setAttribute('class', 'tab-link');
+			}
+			
+			
+			//add Icon
+			if (tabEl['icon']) {
+				var i = this.element('i', null);
+				i.setAttribute('class', 'f7-icons');
+				i.innerHTML = tabEl['icon'].trim();
+			}
+			a.appendChild(i);
+			
+			//add Label
+			if (tabEl['label']) {
+					var l = this.element('span', null);
+					l.setAttribute('class', 'tabbar-label');
+					l.innerHTML = tabEl['label'].trim();
+			}
+			a.appendChild(l);
+			
+			
+			
+			//handle the tab loader
+			tfunc = tabProp['tabFunc'].trim(); 
+			if (tfunc) {
+				a.setAttribute('onclick', tfunc+'(\''+x+'\');');
+			}
+			
+			tbar.appendChild(a);
+			
+		}
+		toolbar.appendChild(tbar);
+		return toolbar; 
+	}
+	
+	
+	/* tabArr = [tabEl]
+	 * tabEl = { 'header', 
+	 * 			 'content 
+	 * 			}
+	 */
+	this.tabs = function(id, tabArr) {
+		
+		var tabbar = this.element('div', id);
+		tabbar.setAttribute('class', 'buttons-row');
 		
 	}
+	
+	
+	
 	
 	
 }

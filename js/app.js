@@ -42,6 +42,12 @@ function appInit() {
 	tblview = ui.tableView('tableview1', {'blockname' : 'Nice List', 'listFunction' : 'testFunc'}, 
 							listElements); 
 	ui.appendToView(tblview);
+	
+	btabs = Array(); 
+	btabs.push({'icon': 'favorites', 'label' : 'Favor'});
+	btabs.push({'icon': 'drawers', 'label' : 'Files'});
+	btabs.push({'icon': 'home', 'label' : 'Home'});
+	ui.bottomToolbar({'tabFunc': 'clickTester'}, btabs);
 }
 	
 function testFunc(listId) {
