@@ -451,6 +451,12 @@ var Framework7UI  = function () {
 		return crd; 
 	}
 	
+	
+	this.accordion = function() {
+		
+	}
+	
+	
 }
 
 
