@@ -1,7 +1,16 @@
+
+
+/**
+ * Instantiates the Framework7UI.
+ * @class Framework7UI
+ */
 var Framework7UI  = function () {
 	
-	
-	//alert for UI
+	/**
+	 * @method
+	 * @memberof Framework7UI
+	 * @param message
+	 */
 	this.alert = function( message ) {
 		msg = ''; 
 		title = '';
@@ -22,10 +31,49 @@ var Framework7UI  = function () {
 	}; 
 	
 	
-	//navbar title component 
+	/**
+	 * Creates the left
+	 * @method navbar
+	 * @memberof Framework7UI
+	 * @param left - Left Element of the Navbar 
+	 * @param center - Center Element of the Navbar
+	 * @param right -Right Element of the NavBar
+	 */
+	this.navbar = function (left, center, right) {
+		 //<div class="navbar" id="navbar">
+         //<div class="navbar-inner" id="navbar">
+		nbar = document.createElement('div');
+		nbar.setAttribute('class', 'navbar');
+		
+		nbarinner = document.createElement('div');
+		nbarinner.setAttribute('class', 'navbar-inner'); 
+				
+		nCent = this.navbarTitle(center);
+		nLeft = this.navbarLeft(left);
+		nRight= this.navbarRight(right);
+		
+		nbarinner.appendChild(nLeft);
+		nbarinner.appendChild(nCent);
+		nbarinner.appendChild(nRight);
+		
+		nbar.appendChild(nbarinner);
+		
+		mview = document.getElementById('mainview');
+		mview.appendChild(nbar);
+	}; 
+	
+	
+	/** 
+	 * Navbar title component 
+	 * @method 
+	 * @memberof Framework7UI
+	 * @param title - Navbar title or center component
+	 */
 	this.navbarTitle = function ( title ) {
-		//
-		center= document.getElementById('navbar-center');
+		center= document.createElement('div');
+		center.setAttribute('class', 'center sliding');
+		center.setAttribute('id', 'navbar-center');
+		
 		if (title) {
 			if (typeof title == 'string') {
 				center.innerHTML = title; 
@@ -37,38 +85,75 @@ var Framework7UI  = function () {
 		return center; 
 	}
 	
-	//navbar title component 
+	/**
+	 * Left navbar component 
+	 * @method
+	 * @memberof Framework7UI
+	 * @param title - Description of the left navbar element
+	 * @returns DOM Node 
+	 */
 	this.navbarLeft = function ( title ) {
-		//
-		var el = document.getElementById('navbar-left');
+		var el = document.createElement('div');
+		el.setAttribute('class', 'left');
+		el.setAttribute('id', 'navbar-left');
+		
+		a = document.createElement('a');
+		a.setAttribute('class', 'link icon-only openpanel');
+		a.setAttribute('data-panel', 'left');
+		
 		if (title) {
 			if (typeof title == 'string') {
-				el.innerHTML = title; 
+				a.innerHTML = title; 
 			} else {
-				el.appendChild(title); 
+				a.appendChild(title); 
 			}
 		}
+		
+		el.appendChild(a);
 		
 		return el; 
 	}
 	
-	//navbar title component 
+	/**
+	 * Right navbar component 
+	 * @method
+	 * @memberof Framework7UI
+	 * @param title - Description of the right navbar element
+	 * @returns DOM Node 
+	 */
 	this.navbarRight = function ( title ) {
-		//
-		var el = document.getElementById('navbar-right');
+		var el = document.createElement('div');
+		el.setAttribute('class', 'right');
+		el.setAttribute('id', 'navbar-right');
+		
+		a = document.createElement('a');
+		a.setAttribute('class', 'link icon-only openpanel');
+		a.setAttribute('data-panel', 'righ');
+		
 		if (title) {
 			if (typeof title == 'string') {
-				el.innerHTML = title; 
+				a.innerHTML = title; 
 			} else {
-				el.appendChild(title); 
+				a.appendChild(title); 
 			}
 		}
+		
+		el.appendChild(a);
 		
 		return el; 
 	}
 	
 	
-	//Creates a DOM object of type eltype
+	
+	
+	/**
+	 *Creates a DOM object of type eltype
+	 *@method
+	 *@memberof Framework7UI
+	 *@param eltype - Element type to be created
+	 *@param id - Element id to be assigned to the DOM Node
+	 *@returns DOM Node
+	 **/
 	this.element = function (eltype, id) {
 		el = document.getElementById(id);
 		if (el) {
@@ -86,15 +171,27 @@ var Framework7UI  = function () {
 		return el;
 	}
 	
-	
-	//clears the main pageview
+	/**
+	 *Clears the main pageview
+	 *@method
+	 *@memberof Framework7UI
+	 *@returns None
+	 **/
 	this.clearView = function() {
 		var el = document.getElementById('pagecontent');
 		//el.getParentNode.removeChild(el);
 		el.innerHTML = '';
 	}
 	
-	//creates a button with properties and id
+	
+	/**
+	 * Create a button with properties and id
+	 * @method
+	 * @memberof Framework7UI
+	 * @param prop "inner" : Defines the inner button content. This could be an Element or String.<BR>"onclick": Defines the function to be called on click
+	 * @param id HTML tag id
+	 * @returns DOM Node
+	 */
 	this.createButton = function( prop, id ) {
 		var el = this.element('p', null); 
 		ax  = this.element('a', id);
@@ -126,8 +223,14 @@ var Framework7UI  = function () {
 		return el;
 	}
 	
-	
-	//creates a content block and adds elements
+	/**
+	 * Creates a content block and adds elements
+	 * @method
+	 * @memberof Framework7UI
+	 * @param id - HTML tag id
+	 * @param elements - Array of elements which would be added to the content block 
+	 * @returns DOM Node
+	 */
 	this.contentBlock = function(id, elements) {
 		//<div class="content-block">
         //<div class="content-block-inner" id="contentblock1-inner">
@@ -165,8 +268,11 @@ var Framework7UI  = function () {
 	
 	
 	
-	
-	//Appends the element to the view
+	/**
+	 * @method
+	 * @memberof Framework7UI
+	 * @param elm Element which would be added to the main view and would be presented immediately.
+	 */
 	this.appendToView = function ( elm ) {
 		el = document.getElementById('pagecontent');
 		if (el) {
@@ -177,18 +283,12 @@ var Framework7UI  = function () {
 	}
 	
 	
-	/* tableView with
-	 * listProp = {'blockname'  : '', 
-	 *			   'listFunction': '',   
-	 *			   'type' : 'media', 
-	 *			   'sortable' : true/false 
-	 * 			}
+	/**
+	 * @method
+	 * @memberof Framework7UI
+	 * @param listBlock 'blockname'  : ''<BR> 'listFunction': ''<BR> 'type' : 'media'<BR>'sortable' : true/false 
+	 * @param listArr  Array formed of object def 'media' : ''<BR> 'title' : '' <BR> 'after' : '' 
 	 * 
-	 * listArr = [ { 'media' : '', 
-	 * 				 'title' : '' ,
-	 * 				 'after' : '' } 
-	 * 
-	 * 			  ]
 	 */
 	this.tableView = function(id, listBlock ,listArr) {
 		
@@ -268,11 +368,13 @@ var Framework7UI  = function () {
 	
 	
 	/*
-	 * tabProp = { 'tabFunc' }
-	 * tabEl =  { 'icon', 
-	 * 			  'label'
-	 * 			  ''
-	 * 			}
+	 * Bottom Toolbar 
+	 * @method
+	 * @memberof Framework7UI
+	 * @param tabProp  - Tab properties, object with { 'tabFunc' : Function called when tab is activated }
+	 * @param tabArr - Array of tab defintions, tabEl =  { 'icon', 'label' }
+	 * @return HTML DOM
+	 * 		
 	 * */
 	this.bottomToolbar = function (tabProp, tabArr) {
 		var toolbar = document.getElementById('toolbararea');
@@ -328,23 +430,16 @@ var Framework7UI  = function () {
 	}
 	
 	
-	/* tabArr = [tabEl]
-	 * tabEl = { 'header', 
-	 * 			 'content 
-	 * 			}
+	/* 
+	 * Generate Tab Element
+	 * @method
+	 * @memberof Framework7UI
+	 * @param tabArr - [tabEl]
+	 * @param tabEl - { 'header', 'content }
+	 * 
+	 * @return DOM Node
 	 */
 	this.tabs = function(id, tabArr) {
-		
-		/*
-		<div class="buttons-row">
-	      <!-- Link to 1st tab, active -->
-	      <a href="#tab1" class="tab-link active button">Tab 1</a>
-	      <!-- Link to 2nd tab -->
-	      <a href="#tab2" class="tab-link button">Tab 2</a>
-	      <!-- Link to 3rd tab -->
-	      <a href="#tab3" class="tab-link button">Tab 3</a>
-	    </div>
-	    */
 		
 		var tabbar = this.element('div', id);
 		tabbar.setAttribute('class', 'buttons-row');
@@ -383,7 +478,15 @@ var Framework7UI  = function () {
 		return cblock; 
 	}
 	
-	//creates a new p element
+	/**
+	 *
+	 * Creates a new 'p' element
+	 * @method 
+	 * @memberof Framework7UI
+	 * @param id - ID of the P element
+	 * @param content - DOM Node or text to be populated within the p element
+	 * @return DOM Node
+	 */
 	this.p = function(id, content) {
 		px = this.element('p', id);
 		if (typeof content == 'string') {
@@ -397,12 +500,12 @@ var Framework7UI  = function () {
 	
 	
 	/*
-	 * cardEl = {
-	 * 	'header' :, 
-	 *  'content': , 
-	 *  'footer':
-	 *  'class' :  
-	 * 	}
+	 * UI Card 
+	 * @method
+	 * @memberof Framework7UI
+	 * @param id - HTML Element id
+	 * @param cardEl - { 'header' : 'content': , 'footer':, 'class' :  }
+	 * @return DOM Node
 	 */
 	this.card = function(id, cardEl) {
 		
@@ -456,6 +559,20 @@ var Framework7UI  = function () {
 		
 	}
 	
+	 /**
+	 * ICON Element 
+	 * @method
+	 * @memberof Framework7UI
+	 * @param iconName - Name of icon
+	 * @returns DOM Node
+	 **/
+	this.icon = function (iconName) {
+		icon = this.element('i', null);
+		icon.setAttribute('class', 'f7-icons');
+		icon.innerHTML = iconName; 
+		
+		return icon; 
+	}
 	
 }
 

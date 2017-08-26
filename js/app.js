@@ -23,7 +23,7 @@ function appInit() {
 	listElements = new Array();
 	listElements.push({'title' : 'Test1', 'after': '1'});
 	listElements.push({'title' : 'Test2', 'after': '2'});
-	listElements.push({'title' : 'Test3', 'after': '3'});
+	listElements.push({'title' : 'Test Instance', 'after': '3'});
 	tblview = ui.tableView('tableview1', {'blockname' : 'Nice List', 'listFunction' : 'testFunc'}, 
 							listElements); 
 	ui.appendToView(tblview);
@@ -31,7 +31,7 @@ function appInit() {
 	//Tabs
 	tabarr = new Array(); 
 	tabarr.push({'header': 'Tab1', 'content' : ui.p(null, 'Cool Stuff') });
-	tabarr.push({'header': 'Tab2', 'content' : ui.p(null, 'Cool Stuff Also') });
+	tabarr.push({'header': 'Tab2', 'content' : ui.p(null, 'Really Cool Stuff Also') });
 	tab1 = ui.tabs('uitabs1', tabarr);
 	ui.appendToView(tab1);
 	
