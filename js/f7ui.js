@@ -98,7 +98,7 @@ var Framework7UI  = function () {
 		el.setAttribute('id', 'navbar-left');
 		
 		a = document.createElement('a');
-		a.setAttribute('class', 'link icon-only openpanel');
+		a.setAttribute('class', 'link icon-only open-panel');
 		a.setAttribute('data-panel', 'left');
 		
 		if (title) {
@@ -127,8 +127,8 @@ var Framework7UI  = function () {
 		el.setAttribute('id', 'navbar-right');
 		
 		a = document.createElement('a');
-		a.setAttribute('class', 'link icon-only openpanel');
-		a.setAttribute('data-panel', 'righ');
+		a.setAttribute('class', 'link icon-only open-panel');
+		a.setAttribute('data-panel', 'right');
 		
 		if (title) {
 			if (typeof title == 'string') {
@@ -158,13 +158,13 @@ var Framework7UI  = function () {
 		el = document.getElementById(id);
 		if (el) {
 			msg = 'Element with id: '+ id + ' already exists';
-			console.log(msg);
+			//console.log(msg);
 		} else {
 			el = document.createElement(eltype);
-			console.log('Creating element: '+ eltype );
+			//console.log('Creating element: '+ eltype );
 			if (id) {
 				el.setAttribute('id', id);
-				console.log('Adding id attribute to : '+ eltype + ', id:'+ id);
+				//console.log('Adding id attribute to : '+ eltype + ', id:'+ id);
 			} 
 		}
 		
@@ -206,7 +206,7 @@ var Framework7UI  = function () {
 		//handle inner stuff
 		if (prop['inner']) {
 			if ( typeof prop['inner'] == 'string') {
-				console.log('Adding '+ prop['inner']);
+				//console.log('Adding '+ prop['inner']);
 				ax.innerHTML = prop['inner']; 
 			} else {
 				ax.appendChild(prop['inner']);
