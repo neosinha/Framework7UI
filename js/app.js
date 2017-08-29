@@ -18,7 +18,7 @@ function appInit() {
 	cb = ui.contentBlock('contentblock1', buttons);
 	ui.appendToView(cb);
 	
-	
+	/*
 	//TableView 
 	listElements = new Array();
 	listElements.push({'title' : 'Test1', 'after': '1'});
@@ -27,6 +27,17 @@ function appInit() {
 	tblview = ui.tableView('tableview1', {'blockname' : 'Nice List', 'listFunction' : 'testFunc'}, 
 							listElements); 
 	ui.appendToView(tblview);
+	*/
+	
+	//TableView 
+	var lElements = new Array();
+	lElements.push({'title' : 'Test3', 'after': '1'});
+	lElements.push({'title' : 'Test4', 'after': '2'});
+	lElements.push({'title' : 'WowTest Instance', 'after': '3'});
+	var tblview = ui.listView('tableview2', {'blockname' : 'Nice List View', 'listFunction' : 'testFunc'}, 
+							lElements); 
+	ui.appendToView(tblview);
+	
 	
 	//Tabs
 	tabarr = new Array(); 
@@ -34,6 +45,7 @@ function appInit() {
 	tabarr.push({'header': 'Tab2', 'content' : ui.p(null, 'Really Cool Stuff Also') });
 	tab1 = ui.tabs('uitabs1', tabarr);
 	ui.appendToView(tab1);
+	
 	
 	
 	
@@ -52,9 +64,9 @@ function appInit() {
 	
 	//Bottom ToolBar
 	btabs = Array(); 
-	btabs.push({'icon': 'favorites', 'label' : 'Favor'});
-	btabs.push({'icon': 'drawers', 'label' : 'Files'});
-	btabs.push({'icon': 'home', 'label' : 'Home'});
+	btabs.push({'icon': 'favorites', 'label' : 'Favor', 'content' : 'Favorite Tab' });
+	btabs.push({'icon': 'drawers', 'label' : 'Files', 'content' : 'Tab2'});
+	btabs.push({'icon': 'home', 'label' : 'Home' });
 	ui.bottomToolbar({'tabFunc': 'clickTester'}, btabs);
 	
 	

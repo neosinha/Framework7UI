@@ -367,12 +367,96 @@ var Framework7UI  = function () {
 	}
 	
 	
+	/**
+	 * @method
+	 * @memberof Framework7UI
+	 * @param listBlock 'blockname'  : ''<BR> 'listFunction': ''<BR> 'type' : 'media'<BR>'sortable' : true/false 
+	 * @param listArr  Array formed of object def 'media' : ''<BR> 'title' : '' <BR> 'after' : '' 
+	 * 
+	 */
+	this.listView = function(id, listBlock ,listArr) {
+		
+		var tbl = this.element('div', id);
+		//process listblock
+		bclass = 'list-block';
+		if (listBlock['type']) {
+			
+		}
+		tbl.setAttribute('class', bclass);
+		
+		
+		if (listBlock['blockname']) {
+			var divx = this.element('div', 'listblocklabel'+id);
+			divx.setAttribute('class', 'list-block-label');
+			divx.innerHTML = listBlock['blockname'];
+			tbl.appendChild(divx);
+		}
+		
+		ul = this.element('ul', null);
+		tbl.appendChild(ul);
+		
+		for (x in listArr) {
+			li = this.element('li', null);
+			
+			listEl = listArr[x]; 
+			var a = this.element('div', 'listel'+id+x);
+			a.setAttribute('class', 'item-content');
+			fn = listBlock['listFunction'];
+			if (fn) {
+				a.setAttribute('onclick', fn+'(\''+x+'\');');
+			}
+			//media
+			if (listEl['media']) {
+				media = this.element('div', 'itemmedia'+id+x);
+				media.setAttribute('class', 'item-media');
+				
+				icon = this.element('i', null);
+				icon.setAttribute('class', 'f7-icons');
+				icon.innerHTML = listEl['media'];
+				
+				media.appendChild(icon);
+				a.appendChild(media);
+			}
+			
+			if (listEl['title']) {
+				var divx = this.element('div', 'listinner-'+id+x);
+				divx.setAttribute('class', 'item-inner');
+				
+				var dtitle = this.element('div', 'listtitle-'+id+x);
+				dtitle.setAttribute('class', 'item-title');
+				dtitle.innerHTML = listEl['title']; 
+				
+				divx.appendChild(dtitle);
+				
+				if (listEl['after']) {
+					var dafter = this.element('div', 'listafter-'+id+x);
+					dafter.setAttribute('class', 'item-after');
+					dafter.innerHTML = listEl['after'];
+					divx.appendChild(dafter);
+				}
+				
+				a.appendChild(divx);
+			}
+			
+			li.appendChild(a);
+			
+			ul.appendChild(li);
+		}
+		
+		
+		//content block
+		//cbl = this.contentBlock('contenblk'+id, [tbl]);
+		
+		return tbl;
+	}
+	
+	
 	/*
 	 * Bottom Toolbar 
 	 * @method
 	 * @memberof Framework7UI
 	 * @param tabProp  - Tab properties, object with { 'tabFunc' : Function called when tab is activated }
-	 * @param tabArr - Array of tab defintions, tabEl =  { 'icon', 'label' }
+	 * @param tabArr - Array of tab defintions, tabEl =  {{ 'icon', 'label', 'content' }} 
 	 * @return HTML DOM
 	 * 		
 	 * */
@@ -382,29 +466,56 @@ var Framework7UI  = function () {
 		
 		
 		toolbar.setAttribute('class', 'toolbar tabbar tabbar-labels'); 
-		
-		
 		var tbar = this.element('div', 'toolbarareainner');
 		tbar.setAttribute('class', 'toolbar-inner'); 
 		
+		/*
+		<div class="tabs">
+        <div id="tab1" class="tab active">
+          <div class="content-block">
+            <p>Lorem ipsum dolor ...</p>
+            <p>In sed augue non ...</p>
+          </div>
+        </div>
+		*/
+		var tabs = this.element('div', 'apptabs');
 		for (x in tabArr) {
-			tabEl = tabArr[x]; 
 			
+			tabEl = tabArr[x]; 
+			tab = this.element('div', 'apptab'+x);
 			var a = this.element('a', 'tabitem'+x);
 			if (x == 0){
 				a.setAttribute('class', 'tab-link active');
+				tab.setAttribute('class', 'tab active');
 			} else {
 				a.setAttribute('class', 'tab-link');
+				tab.setAttribute('class', 'tab');
 			}
 			
+			/*
+			tabcontent = this.element('div', 'apptabcontent'+x);
+			if (typeof content == 'string') {
+				tabcontent.innerHTML = content;
+			} else {
+				tabcontent.appendChild(content);
+			}
 			
-			//add Icon
-			if (tabEl['icon']) {
+			tab.appendChild(tabcontent);
+			toolbar.appendChild(tab);
+			*/
+			
+			//add F7-Icon
+			if (tabEl['f7icon']) {
 				var i = this.element('i', null);
 				i.setAttribute('class', 'f7-icons');
-				i.innerHTML = tabEl['icon'].trim();
-			}
-			a.appendChild(i);
+				i.innerHTML = tabEl['f7icon'].trim();
+				a.appendChild(i);
+			} else if (tabEl['icon']) {
+				var i = this.element('i', null);
+				i.setAttribute('class', 'icon icon-'+tabEl['icon']);
+				i.innerHTML = '';
+				a.appendChild(i);
+			} 
 			
 			//add Label
 			if (tabEl['label']) {
@@ -421,7 +532,6 @@ var Framework7UI  = function () {
 			if (tfunc) {
 				a.setAttribute('onclick', tfunc+'(\''+x+'\');');
 			}
-			
 			tbar.appendChild(a);
 			
 		}
@@ -566,11 +676,26 @@ var Framework7UI  = function () {
 	 * @param iconName - Name of icon
 	 * @returns DOM Node
 	 **/
-	this.icon = function (iconName) {
+	this.f7icon = function (iconName) {
 		icon = this.element('i', null);
 		icon.setAttribute('class', 'f7-icons');
 		icon.innerHTML = iconName; 
 		
+		return icon; 
+	}
+	
+	
+	/**
+	 * ICON Element 
+	 * @method
+	 * @memberof Framework7UI
+	 * @param iconName - Name of icon
+	 * @returns DOM Node
+	 **/
+	this.icon = function (iconName) {
+		icon = this.element('i', null);
+		icon.setAttribute('class', 'icon icon-'+iconName);
+		icon.innerHTML = ''; 
 		return icon; 
 	}
 	
