@@ -384,14 +384,6 @@ var Framework7UI  = function () {
 		}
 		tbl.setAttribute('class', bclass);
 		
-		
-		if (listBlock['blockname']) {
-			var divx = this.element('div', 'listblocklabel'+id);
-			divx.setAttribute('class', 'list-block-label');
-			divx.innerHTML = listBlock['blockname'];
-			tbl.appendChild(divx);
-		}
-		
 		ul = this.element('ul', null);
 		tbl.appendChild(ul);
 		
@@ -399,15 +391,15 @@ var Framework7UI  = function () {
 			li = this.element('li', null);
 			
 			listEl = listArr[x]; 
-			var a = this.element('div', 'listel'+id+x);
+			var a = this.element('div', id+'-listel-'+x );
 			a.setAttribute('class', 'item-content');
 			fn = listBlock['listFunction'];
 			if (fn) {
-				a.setAttribute('onclick', fn+'(\''+x+'\');');
+				a.setAttribute('onclick', fn+'(\''+id+'\',\''+x+'\');');
 			}
 			//media
 			if (listEl['media']) {
-				media = this.element('div', 'itemmedia'+id+x);
+				media = this.element('div', id+'-listel-'+x+'-itemmedia');
 				media.setAttribute('class', 'item-media');
 				
 				icon = this.element('i', null);
@@ -419,17 +411,17 @@ var Framework7UI  = function () {
 			}
 			
 			if (listEl['title']) {
-				var divx = this.element('div', 'listinner-'+id+x);
+				var divx = this.element('div', id+'-listel-'+x+'-listinner');
 				divx.setAttribute('class', 'item-inner');
 				
-				var dtitle = this.element('div', 'listtitle-'+id+x);
+				var dtitle = this.element('div', id+'-listel-'+x+'-listinner-'+'title');
 				dtitle.setAttribute('class', 'item-title');
 				dtitle.innerHTML = listEl['title']; 
 				
 				divx.appendChild(dtitle);
 				
 				if (listEl['after']) {
-					var dafter = this.element('div', 'listafter-'+id+x);
+					var dafter = this.element('div', id+'-listel-'+x+'-listinner-'+'after');
 					dafter.setAttribute('class', 'item-after');
 					dafter.innerHTML = listEl['after'];
 					divx.appendChild(dafter);
@@ -443,7 +435,12 @@ var Framework7UI  = function () {
 			ul.appendChild(li);
 		}
 		
-		
+		if (listBlock['blockname']) {
+			var divx = this.element('div', id+'-listblocklabel');
+			divx.setAttribute('class', 'list-block-label');
+			divx.innerHTML = listBlock['blockname'];
+			tbl.appendChild(divx);
+		}
 		//content block
 		//cbl = this.contentBlock('contenblk'+id, [tbl]);
 		
