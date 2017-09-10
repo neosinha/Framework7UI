@@ -370,11 +370,12 @@ var Framework7UI  = function () {
 	/**
 	 * @method
 	 * @memberof Framework7UI
-	 * @param listBlock 'blockname'  : ''<BR> 'listFunction': ''<BR> 'type' : 'media'<BR>'sortable' : true/false 
-	 * @param listArr  Array formed of object def 'media' : ''<BR> 'title' : '' <BR> 'after' : '' 
+	 * @param listBlock 'blockname'  - 
+	 * @param listFunction   - media: function to be called if media is clicked, title: function to be called if inner is called,  after: function to be called if after is called ''<BR> 'type' : 'media'<BR>'sortable' : true/false 
+	 * @param listArr - Array formed of object <def 'media' : ''<BR> 'title' : '' <BR> 'after' : ''> 
 	 * 
 	 */
-	this.listView = function(id, listBlock ,listArr) {
+	this.listView = function(id, listBlock, listFunction ,listArr) {
 		
 		var tbl = this.element('div', id);
 		//process listblock
@@ -382,6 +383,7 @@ var Framework7UI  = function () {
 		if (listBlock['type']) {
 			
 		}
+		console.log(JSON.stringify(listFunction));
 		tbl.setAttribute('class', bclass);
 		
 		ul = this.element('ul', null);
@@ -393,14 +395,18 @@ var Framework7UI  = function () {
 			listEl = listArr[x]; 
 			var a = this.element('div', id+'-listel-'+x );
 			a.setAttribute('class', 'item-content');
-			fn = listBlock['listFunction'];
-			if (fn) {
-				a.setAttribute('onclick', fn+'(\''+id+'\',\''+x+'\');');
-			}
+			//fn = listBlock['listFunction'];
+			//if (fn) {
+				//a.setAttribute('onclick', fn+'(\''+id+'\',\''+x+'\');');
+			//}
 			//media
 			if (listEl['media']) {
 				media = this.element('div', id+'-listel-'+x+'-itemmedia');
 				media.setAttribute('class', 'item-media');
+				
+				if (listFunction['media']) {
+					media.setAttribute('onclick', listFunction['media']+'(\''+id+'\',\''+x+'\');');
+				}
 				
 				icon = this.element('i', null);
 				icon.setAttribute('class', 'f7-icons');
@@ -414,9 +420,14 @@ var Framework7UI  = function () {
 				var divx = this.element('div', id+'-listel-'+x+'-listinner');
 				divx.setAttribute('class', 'item-inner');
 				
+				
 				var dtitle = this.element('div', id+'-listel-'+x+'-listinner-'+'title');
 				dtitle.setAttribute('class', 'item-title');
 				dtitle.innerHTML = listEl['title']; 
+				if (listFunction['title']) {
+					dtitle.setAttribute('onclick', listFunction['title']+'(\''+id+'\',\''+x+'\');');
+				}
+				
 				
 				divx.appendChild(dtitle);
 				
@@ -424,14 +435,15 @@ var Framework7UI  = function () {
 					var dafter = this.element('div', id+'-listel-'+x+'-listinner-'+'after');
 					dafter.setAttribute('class', 'item-after');
 					dafter.innerHTML = listEl['after'];
+					if (listFunction['after']) {
+						dafter.setAttribute('onclick', listFunction['after']+'(\''+id+'\',\''+x+'\');');
+					}
 					divx.appendChild(dafter);
 				}
-				
 				a.appendChild(divx);
 			}
 			
 			li.appendChild(a);
-			
 			ul.appendChild(li);
 		}
 		
@@ -454,6 +466,7 @@ var Framework7UI  = function () {
 	 * @memberof Framework7UI
 	 * @param tabProp  - Tab properties, object with { 'tabFunc' : Function called when tab is activated }
 	 * @param tabArr - Array of tab defintions, tabEl =  {{ 'icon', 'label', 'content' }} 
+	 * @deprecated
 	 * @return HTML DOM
 	 * 		
 	 * */
@@ -466,15 +479,7 @@ var Framework7UI  = function () {
 		var tbar = this.element('div', 'toolbarareainner');
 		tbar.setAttribute('class', 'toolbar-inner'); 
 		
-		/*
-		<div class="tabs">
-        <div id="tab1" class="tab active">
-          <div class="content-block">
-            <p>Lorem ipsum dolor ...</p>
-            <p>In sed augue non ...</p>
-          </div>
-        </div>
-		*/
+		
 		var tabs = this.element('div', 'apptabs');
 		for (x in tabArr) {
 			
@@ -489,17 +494,6 @@ var Framework7UI  = function () {
 				tab.setAttribute('class', 'tab');
 			}
 			
-			/*
-			tabcontent = this.element('div', 'apptabcontent'+x);
-			if (typeof content == 'string') {
-				tabcontent.innerHTML = content;
-			} else {
-				tabcontent.appendChild(content);
-			}
-			
-			tab.appendChild(tabcontent);
-			toolbar.appendChild(tab);
-			*/
 			
 			//add F7-Icon
 			if (tabEl['f7icon']) {
@@ -512,7 +506,12 @@ var Framework7UI  = function () {
 				i.setAttribute('class', 'icon icon-'+tabEl['icon']);
 				i.innerHTML = '';
 				a.appendChild(i);
-			} 
+			} else if (tabEl['flaticon']) {
+				var i = this.element('i', null);
+				i.setAttribute('class', 'flaticon-'+tabEl['flaticon']);
+				i.innerHTML = '';
+				a.appendChild(i);
+			}  
 			
 			//add Label
 			if (tabEl['label']) {
@@ -566,7 +565,6 @@ var Framework7UI  = function () {
 			a.setAttribute('href', '#tabview'+x);
 			tabbar.appendChild(a);
 			
-			
 			tabview = this.element('div', 'tabview'+x);
 			if (x == 0)
 				tabview.setAttribute('class', 'tab active');
@@ -585,6 +583,118 @@ var Framework7UI  = function () {
 		return cblock; 
 	}
 	
+	
+	/**
+	 * TabView controller
+	 * @method
+	 * @memberof Framework7UI
+	 * @param id - ID of the tab 
+	 * @param tabArr - Array of tab definitions, tabEl =  {{ 'icon', 'label', 'content' }} 
+	 * 
+	 * @return JSON object with views
+	 */
+	this.tabView = function(id, tabArr) {
+		console.log("Entering tabview once...");
+		var tabObj = {};
+		var toolbar = document.getElementById('toolbararea');
+		toolbar.innerHTML = ''; 
+		
+		
+		toolbar.setAttribute('class', 'toolbar tabbar tabbar-labels'); 
+		var tabbar = this.element('div', 'toolbarareainner');
+		tabbar.setAttribute('class', 'toolbar-inner'); 
+		toolbar.appendChild(tabbar);
+		
+		var tabarea = this.element('div', 'tabarea'+id);
+		tabarea.setAttribute('class', 'tabs');
+		
+		for (x in tabArr) {
+			var tab = tabArr[x]; 
+			var a = this.element('a', 'tabel'+x);
+			if (x == 0)
+				a.setAttribute('class', 'tab-link active');
+			else
+				a.setAttribute('class', 'tab-link');
+			
+			//a.innerHTML = tab['header'].trim();
+			a.setAttribute('href', '#tabcontentview'+x);
+			
+			//add F7-Icon
+			if (tab['f7icon']) {
+				var i = this.element('i', null);
+				i.setAttribute('class', 'f7-icons');
+				i.innerHTML = tab['f7icon'].trim();
+				a.appendChild(i);
+				
+			} else if (tab['icon']) {
+				var i = this.element('i', null);
+				i.setAttribute('class', 'icon icon-'+tab['icon']);
+				i.innerHTML = '';
+				a.appendChild(i);
+				
+			} else if (tab['flaticon']) {
+				var i = this.element('i', null);
+				i.setAttribute('class', 'flaticon-'+tab['flaticon']);
+				i.innerHTML = '';
+				a.appendChild(i);
+			}  
+			
+			//add Label
+			if (tab['label']) {
+				var l = this.element('span', null);
+				l.setAttribute('class', 'tabbar-label');
+				l.innerHTML = tab['label'].trim();
+			}
+			a.appendChild(l);
+			
+			tabbar.appendChild(a);
+			
+			var tabview = this.element('div', 'tabcontentview'+x);
+			if (x == 0)
+				tabview.setAttribute('class', 'tab active');
+			else
+				tabview.setAttribute('class', 'tab');
+			
+			
+			var tcontent = this.element('div', 'tabviewcontent'+x);
+			tcontent.setAttribute('class', 'content-block');
+			tcontent.appendChild(tab['content']);
+			
+			//console.log("Tabview"+x+ ":"+ tab['content'].innerHTML);
+			tabview.appendChild(tcontent);
+			tabarea.appendChild(tabview);
+			tabObj['tabview'+x] = document.getElementById['tabcontenview'+x];
+		}
+		
+		pg = document.getElementById('pagecontent');
+		pg.appendChild(tabarea);
+		
+		return tabObj; 
+	}
+	
+	
+	/**
+	 * Append to a Tabview
+	 * @method
+	 * @memberof Framework7UI
+	 * @param viewid - ID of view to which element, or list of elements should be appended
+	 */
+	this.appendToView = function(viewid, content) {
+		var el = document.getElementById(viewid);
+		if (el) {
+			if (typeof content == 'string') {
+				el.innerHTML = content; 
+			} else  {
+				for (x in content) {
+					cnt = content[x]; 
+					el.appendChild(cnt);
+				}
+			}
+		}
+		
+	}
+	
+	
 	/**
 	 *
 	 * Creates a new 'p' element
@@ -595,7 +705,7 @@ var Framework7UI  = function () {
 	 * @return DOM Node
 	 */
 	this.p = function(id, content) {
-		px = this.element('p', id);
+		var px = this.element('p', id);
 		if (typeof content == 'string') {
 			px.innerHTML = content; 
 		} else {
@@ -663,7 +773,35 @@ var Framework7UI  = function () {
 	
 	
 	this.accordion = function() {
-		
+	 /*<div class="list-block accordion-list">
+	    <ul>
+	        <li class="accordion-item">
+	            <a href="" class="item-link item-content">
+	                <div class="item-inner">
+	                    <div class="item-title">Item 1</div>
+	                </div>
+	            </a> 
+	            <div class="accordion-item-content">Item 1 content ...</div>
+	        </li>
+	        <li class="accordion-item">
+	            <a href="" class="item-link item-content">
+	                <div class="item-inner">
+	                    <div class="item-title">Item 2</div>
+	                </div>
+	            </a> 
+	            <div class="accordion-item-content">Item 2 content ...</div>
+	        </li>
+	    </ul>
+	  </div>*/
+	  divacc = this.element('div');
+	  divacc.setAttribute('class', 'list-block accordian-list');
+	  
+	  divul = this.element('ul');
+	  for (x in listEl) {
+		  
+	  }
+	  
+	  
 	}
 	
 	 /**
@@ -690,11 +828,75 @@ var Framework7UI  = function () {
 	 * @returns DOM Node
 	 **/
 	this.icon = function (iconName) {
-		icon = this.element('i', null);
+		var icon = this.element('i', null);
 		icon.setAttribute('class', 'icon icon-'+iconName);
 		icon.innerHTML = ''; 
 		return icon; 
 	}
+	
+	
+	this.flaticon = function (iconName) {
+		var icon = this.element('i', null);
+		icon.setAttribute('class', 'flaticon-'+iconName);
+		icon.innerHTML = ''; 
+		return icon; 
+	}
+	
+	
+	/**
+	 * @method
+	 * @member of Framework7UI
+	 * @param id - ID Name
+	 * @param formArray - Array with form elements
+	 * @param onsubmit - HTTP/Javascript call which handles the form submission
+	 *  
+	 */
+	this.form = function (id, formArray, onsubmit) {
+	    	form = document.createElement('form');
+	    	form.setAttribute('id', id);
+	    	form.setAttribute('action', 'javascript:null');
+	    	
+	    	for (x in formArray) {
+	    		formdef = formArray[x]; 
+	    		formel = document.createElement('input');
+	    		formel.setAttribute('type', formdef['type']);
+	    		
+	    		if (formdef['id']){
+	    			formel.setAttribute('id', formdef['id'].trim());
+	    		} else {
+	    			formel.setAttribute('id', id+'inpx'+x);
+	    		}
+	    		
+	    		formel.setAttribute('required', 'true');
+	    		
+	    		if (typeof formdef['content'] == 'string') {
+	    			cnt = formdef['content'].trim(); 
+	    			formel.setAttribute('placeholder', cnt);
+	    		}
+	    		form.appendChild(formel);
+	    	}
+	    	
+	    	submit = document.createElement('button');
+	    	if (typeof onsubmit['type'] == 'string') {
+	    		submit.setAttribute('class', 'button-'+onsubmit['type']);
+	    	}
+	    	
+	    	if (typeof onsubmit == 'string') {
+	    		submit.innerHTML = onsubmit['content'];
+	    	} else {
+	    		submit.appendChild(onsubmit);
+	    	}
+	    	
+	    	submit.setAttribute('onclick', onsubmit['func']);
+	    	
+	    	//form.appendChild(submit);
+	    	
+	    	return form; 
+	    	
+	    }
+	    
+	    
+	
 	
 }
 

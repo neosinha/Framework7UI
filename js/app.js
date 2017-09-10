@@ -6,19 +6,27 @@ function appInit() {
 	console.log("Main entry point into the App");
 	
 	
-	
 	ui.clearView();
 	ui.navbarTitle('New Page');
 	ui.navbarRight();
+	
+	tabarr = new Array(); 
+	tabarr.push({'f7icon': 'settings', 'label': 'Tab1', 'content' : ui.p(null, 'Cool Stuff') });
+	tabarr.push({'f7icon': 'bolt', 'label': 'Tab2', 'content' : ui.p(null, 'Really Cool Stuff Also') });
+	tabs = ui.tabView('bottomTab', tabarr);
+	//ui.appendToView(tab1);
+	tabview1 = ui.element('tabcontentview0');;
+	
 	
 	buttons = Array();
 	buttons.push(ui.createButton( {'inner' : 'Test Button', 'type': 'button active' ,'onclick' : 'clickTester();'} , 'button1'));
 	buttons.push(ui.createButton( {'inner' : 'Test Button', 'type': 'button-big button-fill color-red' ,'onclick' : 'clickTester();'} , 'button2'));
 	
-	cb = ui.contentBlock('contentblock1', buttons);
-	ui.appendToView(cb);
+	//cb = ui.contentBlock('contentblock1', buttons);
+	//ui.appendToView(cb);
+
+	ui.appendToView('tabcontentview0',buttons);
 	
-	/*
 	//TableView 
 	listElements = new Array();
 	listElements.push({'title' : 'Test1', 'after': '1'});
@@ -26,8 +34,8 @@ function appInit() {
 	listElements.push({'title' : 'Test Instance', 'after': '3'});
 	tblview = ui.tableView('tableview1', {'blockname' : 'Nice List', 'listFunction' : 'testFunc'}, 
 							listElements); 
-	ui.appendToView(tblview);
-	*/
+	//ui.appendToView(tblview);
+	ui.appendToView('tabcontentview1', [tblview]);
 	
 	//TableView 
 	var lElements = new Array();
@@ -36,15 +44,15 @@ function appInit() {
 	lElements.push({'title' : 'WowTest Instance', 'after': '3'});
 	var tblview = ui.listView('tableview2', {'blockname' : 'Nice List View', 'listFunction' : 'testFunc'}, 
 							lElements); 
-	ui.appendToView(tblview);
+	//ui.appendToView(tblview);
 	
 	
 	//Tabs
 	tabarr = new Array(); 
 	tabarr.push({'header': 'Tab1', 'content' : ui.p(null, 'Cool Stuff') });
 	tabarr.push({'header': 'Tab2', 'content' : ui.p(null, 'Really Cool Stuff Also') });
-	tab1 = ui.tabs('uitabs1', tabarr);
-	ui.appendToView(tab1);
+	//tab1 = ui.tabs('uitabs1', tabarr);
+	//ui.appendToView(tab1);
 	
 	
 	
@@ -52,22 +60,14 @@ function appInit() {
 	//card
 	b1 = ui.createButton({'inner' : 'Card Button', 'type': 'button-fill color-green', 'onclick': 'clickTester();'} );
 	card1 = ui.card('card1', {'header': 'Card Header', 'content': b1, 'footer': 'Footer Text'}); 
-	ui.appendToView(card1);
+	//ui.appendToView(card1);
 	
 	//card2
 	tblview = ui.tableView('tableview2', {'blockname' : 'Nice List', 'listFunction' : 'testFunc'}, 
-			listElements); 
+							listElements); 
 	b1 = ui.createButton({'inner' : 'Card Button', 'type': 'button-fill color-pink', 'onclick': 'clickTester();'} );
 	card1 = ui.card('card2', {'header': 'Card Header', 'content': tblview, 'footer': 'Nice Text'}); 
-	ui.appendToView(card1);
-	
-	
-	//Bottom ToolBar
-	btabs = Array(); 
-	btabs.push({'icon': 'favorites', 'label' : 'Favor', 'content' : 'Favorite Tab' });
-	btabs.push({'icon': 'drawers', 'label' : 'Files', 'content' : 'Tab2'});
-	btabs.push({'icon': 'home', 'label' : 'Home' });
-	ui.bottomToolbar({'tabFunc': 'clickTester'}, btabs);
+	//ui.appendToView(card1);
 	
 	
 	
