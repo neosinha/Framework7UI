@@ -11,8 +11,8 @@ function appInit() {
 	ui.navbarRight();
 	
 	tabarr = new Array(); 
-	tabarr.push({'f7icon': 'settings', 'label': 'Tab1', 'content' : ui.p(null, 'Cool Stuff') });
-	tabarr.push({'f7icon': 'bolt', 'label': 'Tab2', 'content' : ui.p(null, 'Really Cool Stuff Also') });
+	tabarr.push({'f7icon': 'settings', 'label': 'Tab1', 'content' : [ui.p(null, 'Cool Stuff')] });
+	tabarr.push({'f7icon': 'bolt', 'label': 'Tab2', 'content' : [ui.p(null, 'Really Cool Stuff Also')] });
 	tabs = ui.tabView('bottomTab', tabarr);
 	//ui.appendToView(tab1);
 	tabview1 = ui.element('tabcontentview0');;

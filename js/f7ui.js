@@ -658,8 +658,11 @@ var Framework7UI  = function () {
 			
 			var tcontent = this.element('div', 'tabviewcontent'+x);
 			tcontent.setAttribute('class', 'content-block');
-			tcontent.appendChild(tab['content']);
-			
+			tabconts = tab['content'];
+			for (ix in tabconts) {
+				var tx = tabconts[ix];
+				tcontent.appendChild(tx);
+			}
 			//console.log("Tabview"+x+ ":"+ tab['content'].innerHTML);
 			tabview.appendChild(tcontent);
 			tabarea.appendChild(tabview);
