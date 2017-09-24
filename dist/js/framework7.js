@@ -2551,7 +2551,7 @@ return t7;
         };
     
         // Link to local storage
-        app.ls = window.localStorage;
+        app.ls = localStorage;
     
         // RTL
         app.rtl = $('body').css('direction') === 'rtl';

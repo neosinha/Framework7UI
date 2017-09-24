@@ -370,7 +370,7 @@ var Framework7UI  = function () {
 	/**
 	 * @method
 	 * @memberof Framework7UI
-	 * @param listBlock 'blockname'  - 
+	 * @param listBlock - 'blockname'   
 	 * @param listFunction   - media: function to be called if media is clicked, title: function to be called if inner is called,  after: function to be called if after is called ''<BR> 'type' : 'media'<BR>'sortable' : true/false 
 	 * @param listArr - Array formed of object <def 'media' : ''<BR> 'title' : '' <BR> 'after' : ''> 
 	 * 
@@ -772,6 +772,95 @@ var Framework7UI  = function () {
 		}
 		
 		return crd; 
+	}
+	
+	/**
+	 * @method
+	 * @memberof Framework7UI
+	 * @param listBlock - 'blockname'   
+	 * @param listFunction   - media: function to be called if media is clicked, title: function to be called if inner is called,  after: function to be called if after is called ''<BR> 'type' : 'media'<BR>'sortable' : true/false 
+	 * @param listArr - Array formed of object <def 'media' : ''<BR> 'title' : '' <BR> 'after' : ''> 
+	 * 
+	 */
+	this.formListView = function(id, listBlock,listArr) {
+		
+		var tbl = this.element('div', id);
+		//process listblock
+		bclass = 'list-block';
+		
+		if (listBlock['blockname']) {
+			var divx = this.element('div', id+'-listblocklabel');
+			divx.setAttribute('class', 'list-block-label');
+			divx.innerHTML = listBlock['blockname'];
+			tbl.appendChild(divx);
+		}
+		
+		//console.log(JSON.stringify(listFunction));
+		tbl.setAttribute('class', bclass);
+		
+		var ul = this.element('ul', null);
+		tbl.appendChild(ul);
+		
+		for (x in listArr) {
+			var li = this.element('li', null);
+			
+			inpEl = listArr[x]; 
+			var divcontent = this.element('div', id+'-listel-'+x );
+			divcontent.setAttribute('class', 'item-content');
+			
+			//media
+			if (inpEl['media']) {
+				var media = this.element('div', id+'-listel-'+x+'-itemmedia');
+				media.setAttribute('class', 'item-media');
+				
+				var icon = this.element('i', null);
+				icon.setAttribute('class', 'f7-icons');
+				icon.innerHTML = inpEl['media'];
+				
+				media.appendChild(icon);
+				divcontent.appendChild(media);
+			}
+			
+			var divinner = this.element('div', id+'-listel-'+x+'-listinner');
+			divinner.setAttribute('class', 'item-inner');
+			
+			if (inpEl['title']) {
+				var divtitle = this.element('div', id+'-listel-'+x+'-listinner-'+'title');
+				divtitle.innerHTML = inpEl['title']; 
+				divtitle.setAttribute('class', 'item-title label');
+				divinner.appendChild(divtitle);
+			}
+			
+			//<div class="item-input">
+			var iteminp = this.element('div', id+'-listel-item-'+x+'input');
+			iteminp.setAttribute('class', 'item-input');
+			
+			var inp = this.element('input', id+'-listel-'+x+'input');
+			var inptype = 'text';
+			var placeholder = 'Placeholder';
+			
+			if (inpEl['type']) {
+				inptype = inpEl['type'];
+			}	
+			inp.setAttribute('type', inpEl['type']);
+			
+			if (inpEl['placeholder']) {
+				placeholder = inpEl['placeholder'];
+			}	
+			inp.setAttribute('placeholder', placeholder);
+			
+			iteminp.appendChild(inp);
+			
+			divinner.appendChild(iteminp);
+			divcontent.appendChild(divinner);
+			
+			li.appendChild(divcontent);
+			ul.appendChild(li);
+		}
+		
+		
+		
+		return tbl;
 	}
 	
 	

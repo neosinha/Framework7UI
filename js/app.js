@@ -37,6 +37,18 @@ function appInit() {
 	//ui.appendToView(tblview);
 	ui.appendToView('tabcontentview1', [tblview]);
 	
+	
+	//TableView 
+	var ilistElements = new Array();
+	ilistElements.push({'title' : 'Test1', 'type': 'text', 'media' : 'persons', 'placeholder' : 'Input1'});
+	ilistElements.push({'title' : 'Test2', 'type': 'Email', 'media' : 'email', 'placeholder' : 'JohnDoe@Email.com'});
+	ilistElements.push({'title' : 'Test3', 'type': 'datetime-local', 'media' : 'calendar', 'placeholder' : 'Input3'});
+	
+	//id, listBlock, listFunction ,listArr
+	var tblview = ui.formListView('formview2', {'blockname' : 'Nice List2', 'listFunction' : 'testFunc'}, 
+							ilistElements); 
+	
+	ui.appendToView('tabcontentview1', [tblview]);
 	//TableView 
 	var lElements = new Array();
 	lElements.push({'title' : 'Test3', 'after': '1'});
