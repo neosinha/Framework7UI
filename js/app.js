@@ -43,12 +43,20 @@ function appInit() {
 	ilistElements.push({'title' : 'Test1', 'type': 'text', 'media' : 'persons', 'placeholder' : 'Input1'});
 	ilistElements.push({'title' : 'Test2', 'type': 'Email', 'media' : 'email', 'placeholder' : 'JohnDoe@Email.com'});
 	ilistElements.push({'title' : 'Test3', 'type': 'datetime-local', 'media' : 'calendar', 'placeholder' : 'Input3'});
+	ilistElements.push({'title' : 'Test4', 'type': 'select', 'options': ['Opt1', 'Opt2', 'Opt3'] , 'media' : 'calendar', 'placeholder' : 'Input3'});
+
+	ilistElements.push({'title' : 'Test5', 'type': 'range', 'min' : '0', 'max' : '100', 'step': '10', 'media' : 'calendar', 
+									'placeholder' : '50'});
+	
+	ilistElements.push({'title' : 'Test6', 'type': 'switch', 'media' : 'person'});
+	
 	
 	//id, listBlock, listFunction ,listArr
 	var tblview = ui.formListView('formview2', {'blockname' : 'Nice List2', 'listFunction' : 'testFunc'}, 
 							ilistElements); 
 	
 	ui.appendToView('tabcontentview1', [tblview]);
+	
 	//TableView 
 	var lElements = new Array();
 	lElements.push({'title' : 'Test3', 'after': '1'});

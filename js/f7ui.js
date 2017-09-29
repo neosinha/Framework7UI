@@ -70,9 +70,15 @@ var Framework7UI  = function () {
 	 * @param title - Navbar title or center component
 	 */
 	this.navbarTitle = function ( title ) {
-		center= document.createElement('div');
-		center.setAttribute('class', 'center sliding');
-		center.setAttribute('id', 'navbar-center');
+		
+		var center = document.getElementById('navbar-center');
+		if (center) {
+			
+		} else {
+			center= document.createElement('div');
+			center.setAttribute('class', 'center sliding');
+			center.setAttribute('id', 'navbar-center');
+		}
 		
 		if (title) {
 			if (typeof title == 'string') {
@@ -598,9 +604,8 @@ var Framework7UI  = function () {
 		var tabObj = {};
 		var toolbar = document.getElementById('toolbararea');
 		toolbar.innerHTML = ''; 
+		toolbar.setAttribute('class', 'toolbar tabbar'); 
 		
-		
-		toolbar.setAttribute('class', 'toolbar tabbar tabbar-labels'); 
 		var tabbar = this.element('div', 'toolbarareainner');
 		tabbar.setAttribute('class', 'toolbar-inner'); 
 		toolbar.appendChild(tabbar);
@@ -641,11 +646,13 @@ var Framework7UI  = function () {
 			
 			//add Label
 			if (tab['label']) {
+				toolbar.setAttribute('class', 'toolbar tabbar tabbar-labels'); 
+				
 				var l = this.element('span', null);
 				l.setAttribute('class', 'tabbar-label');
 				l.innerHTML = tab['label'].trim();
+				a.appendChild(l);
 			}
-			a.appendChild(l);
 			
 			tabbar.appendChild(a);
 			
@@ -813,11 +820,15 @@ var Framework7UI  = function () {
 				var media = this.element('div', id+'-listel-'+x+'-itemmedia');
 				media.setAttribute('class', 'item-media');
 				
-				var icon = this.element('i', null);
-				icon.setAttribute('class', 'f7-icons');
-				icon.innerHTML = inpEl['media'];
+				if (typeof inpEl['media'] == 'string' ) {
+					var icon = this.element('i', null);
+					icon.setAttribute('class', 'f7-icons');
+					icon.innerHTML = inpEl['media'];
+					media.appendChild(icon);
+				} else {
+					media.appendChild(inpEl['media']);
+				}
 				
-				media.appendChild(icon);
 				divcontent.appendChild(media);
 			}
 			
@@ -835,21 +846,77 @@ var Framework7UI  = function () {
 			var iteminp = this.element('div', id+'-listel-item-'+x+'input');
 			iteminp.setAttribute('class', 'item-input');
 			
-			var inp = this.element('input', id+'-listel-'+x+'input');
-			var inptype = 'text';
-			var placeholder = 'Placeholder';
+			
 			
 			if (inpEl['type']) {
 				inptype = inpEl['type'];
+				
+				
+				if (inptype == 'select') {
+					 //<select>
+		              //<option>Male</option>
+		              //<option>Female</option>
+		            //</select>
+					var inp = this.element('select', id+'-listel-'+x+'input');
+					var options = inpEl['options'];
+					for (xx in options) {
+						opt = options[xx]; 
+						var optx = this.element('option', null);
+						optx.innerHTML = opt; 
+						inp.appendChild(optx);
+					}
+					
+					iteminp.appendChild(inp);
+					
+				} else if (inptype == 'range') {
+					  //<div class="range-slider">
+		              //  <input type="range" min="0" max="100" value="50" step="0.1">
+					  var divx = this.element('div', null);
+					  divx.setAttribute('class', 'range-slider');
+					  
+					  var inp = this.element('input', id+'-listel-'+x+'input');
+					  inp.setAttribute('type', 'range');
+					  inp.setAttribute('min', inpEl['min']);
+					  inp.setAttribute('max', inpEl['max']);
+					  inp.setAttribute('step', inpEl['step']);
+					  inp.setAttribute('value', inpEl['placeholder']);
+					 
+					  divx.appendChild(inp);
+					  iteminp.appendChild(divx);
+				
+				} else if (inptype == 'switch') {
+					
+					  var divswitch = this.element('div', null);
+					  divswitch.setAttribute('class', 'item-after'); 
+					  
+					  var lbl = this.element('label', null);
+					  lbl.setAttribute('class', 'label-switch');
+					  var inp = this.element('input', id+'-listel-'+x+'input');
+					  inp.setAttribute('type', 'checkbox');
+					  var divx = this.element('div', null);
+					  divx.setAttribute('class', 'checkbox');
+					  
+					  divswitch.appendChild(lbl);
+					  
+					  lbl.appendChild(inp);
+					  lbl.appendChild(divx);
+					  iteminp.appendChild(divswitch);
+					  
+				} else {
+					var inp = this.element('input', id+'-listel-'+x+'input');
+					var inptype = 'text';
+					var placeholder = 'Placeholder';
+					
+					inp.setAttribute('type', inptype);
+					if (inpEl['placeholder']) {
+						placeholder = inpEl['placeholder'];
+					}	
+					inp.setAttribute('placeholder', placeholder);
+					iteminp.appendChild(inp);
+				}
 			}	
-			inp.setAttribute('type', inpEl['type']);
 			
-			if (inpEl['placeholder']) {
-				placeholder = inpEl['placeholder'];
-			}	
-			inp.setAttribute('placeholder', placeholder);
 			
-			iteminp.appendChild(inp);
 			
 			divinner.appendChild(iteminp);
 			divcontent.appendChild(divinner);
