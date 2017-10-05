@@ -6,8 +6,33 @@ function appInit() {
 	console.log("Main entry point into the App");
 	
 	
+	var login = {};
+	login['header'] = 'Smart Dairy';
+	login['callback'] = 'loginHandler();';
+	login['label'] = 'Sign In'; 
+	var loginEl = new Array();
+	loginEl.push({'title' : 'User Name', 'type': 'text', 'media' : 'persons', 'placeholder' : 'johndoe@email.com'});
+	loginEl.push({'title' : 'Password', 'type': 'password', 'media' : 'lock', 'placeholder' : ''});
+	login['fields'] = loginEl; 
+	
+	var register = {}; 
+	register['label'] = 'Register';
+	register['callback'] = 'showRegisterView();';
+	ui.loginScreen(login, register);
+	
+	
+	return;
+	
+	
+	
+	
+}
+
+function makeViews() {
+	
 	ui.clearView();
-	ui.navbarTitle('New Page');
+	ui.navbar('', 'Smart Domus', '');
+	//ui.navbarTitle('New Page');
 	ui.navbarRight();
 	
 	tabarr = new Array(); 
@@ -89,10 +114,34 @@ function appInit() {
 	card1 = ui.card('card2', {'header': 'Card Header', 'content': tblview, 'footer': 'Nice Text'}); 
 	//ui.appendToView(card1);
 	
+}
+
 	
+function showRegisterView() {
+	var login = {};
+	login['header'] = 'Smart Dairy Register';
+	login['callback'] = 'registerHandler();';
+	login['label'] = 'Register'; 
+	var loginEl = new Array();
+	loginEl.push({'title' : 'User Name', 'type': 'text', 'media' : 'persons', 'placeholder' : 'johndoe@email.com'});
+	loginEl.push({'title' : 'Password', 'type': 'password', 'media' : 'lock', 'placeholder' : ''});
+	loginEl.push({'title' : 'Re-type Password', 'type': 'password', 'media' : 'lock', 'placeholder' : ''});
+	login['fields'] = loginEl; 
+	
+	var register = {}; 
+	register['label'] = 'Cancel';
+	register['callback'] = 'appInit();';
+	ui.loginScreen(login, register);
 	
 }
-	
+
+
+function loginHandler() {
+	ui.alert( {'text' : 'Login Handler'} );
+	makeViews();
+}
+
+
 function testFunc(listId) {
 	console.log('ListEl: '+listId + ' was clicked..');
 }

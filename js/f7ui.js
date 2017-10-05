@@ -42,15 +42,15 @@ var Framework7UI  = function () {
 	this.navbar = function (left, center, right) {
 		 //<div class="navbar" id="navbar">
          //<div class="navbar-inner" id="navbar">
-		nbar = document.createElement('div');
+		var nbar = document.createElement('div');
 		nbar.setAttribute('class', 'navbar');
 		
-		nbarinner = document.createElement('div');
+		var nbarinner = document.createElement('div');
 		nbarinner.setAttribute('class', 'navbar-inner'); 
 				
-		nCent = this.navbarTitle(center);
-		nLeft = this.navbarLeft(left);
-		nRight= this.navbarRight(right);
+		var nCent = this.navbarTitle(center);
+		var nLeft = this.navbarLeft(left);
+		var nRight= this.navbarRight(right);
 		
 		nbarinner.appendChild(nLeft);
 		nbarinner.appendChild(nCent);
@@ -58,7 +58,7 @@ var Framework7UI  = function () {
 		
 		nbar.appendChild(nbarinner);
 		
-		mview = document.getElementById('mainview');
+		mview = document.getElementById('viewmain');
 		mview.appendChild(nbar);
 	}; 
 	
@@ -78,6 +78,7 @@ var Framework7UI  = function () {
 			center= document.createElement('div');
 			center.setAttribute('class', 'center sliding');
 			center.setAttribute('id', 'navbar-center');
+			document.getElementById('navbar').appendChild(center);
 		}
 		
 		if (title) {
@@ -128,10 +129,14 @@ var Framework7UI  = function () {
 	 * @returns DOM Node 
 	 */
 	this.navbarRight = function ( title ) {
-		var el = document.createElement('div');
-		el.setAttribute('class', 'right');
-		el.setAttribute('id', 'navbar-right');
-		
+		var el = document.getElementById('navbar-right');
+		if (el) {
+			console.log('Navbar Right already exists');
+		} else {
+			el = document.createElement('div');
+			el.setAttribute('class', 'right');
+			el.setAttribute('id', 'navbar-right');
+		}
 		a = document.createElement('a');
 		a.setAttribute('class', 'link icon-only open-panel');
 		a.setAttribute('data-panel', 'right');
@@ -1054,9 +1059,82 @@ var Framework7UI  = function () {
 	    	
 	    }
 	    
+		
+		/**
+		 * @method
+		 * @memberof Framework7UI
+		 * @param login - {}
+		 * @param register - Boolean
+		 * @param successFunc 
+		 * @param failureFunc
+		 */
+	    this.loginScreen = function( login, register) {
+	    	
+	    	var loginobj = login; 
+	    	
+	    	var pgcont = document.getElementById('pagecontent');
+	    	pgcont.innerHTML = '';
+	    	pgcont.setAttribute('class', 'page-content login-screen-content');
+	    	
+	    	var dlogin = document.createElement('div');
+	    	dlogin.setAttribute('class', 'login-screen-title');
+	    	dlogin.innerHTML = login['header'];
+	    	
+	    	
+	    	var ilistElements = new Array();
+	    	var loginFields = login['fields']; 
+	    	var tblview = this.formListView('loginview', 
+	    									{'blockname' : null , 'listFunction' : 'testFunc'}, 
+	    									loginFields); 
+	    	
+	    	
+	    	pgcont.appendChild(this.p(null, '<BR>'));
+	    	pgcont.appendChild(this.p(null, '<BR>'));
+	    	pgcont.appendChild(dlogin);
+	    	pgcont.appendChild(tblview);
+	    	
+	    	
+	    	var cblock = this.element('div', null);
+	    	cblock.setAttribute('class', 'content-block');
+	    	
+	    	var row = this.element('div', null);
+	    	row.setAttribute('class', 'row');
+	    	var col50 = this.element('div', null);
+	    	col50.setAttribute('class', 'col-50');
+	    	
+	    	var lgin = this.element('a');
+	    	lgin.setAttribute('class', 'button button-big button-fill color-green');
+	    	lgin.innerHTML = login['label'];
+	    	lgin.setAttribute('onclick', login['callback']);
+	    	col50.appendChild(lgin); 
+	    	row.appendChild(col50);
+	    	
+	    	var col51 = this.element('div', null);
+	    	col51.setAttribute('class', 'col-50');
+	    	
+	    	var signup = this.element('a');
+	    	signup.setAttribute('class', 'button button-big button-fill color-yellow');
+	    	if (register) {
+	    		signup.innerHTML = register['label'];
+	    		signup.setAttribute('href', 'javascript:null');
+	    		signup.setAttribute('onclick', register['callback']);
+	    	} else {
+	    		signup.innerHTML = 'Cancel';
+	    		signup.setAttribute('href', 'javascript:null');
+	    	}
+	    	col51.appendChild(signup); 
+	    	row.appendChild(col51);
+	    	
+	    	cblock.appendChild(row);
+	    	pgcont.appendChild(cblock);
+	    	
+	    	
+	    }
+	
+	    
 	    
 	
-	
+	    
 }
 
 
