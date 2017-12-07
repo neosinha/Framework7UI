@@ -228,7 +228,7 @@ var Framework7UI  = function () {
 		if (prop['onclick']) {
 			ax.setAttribute('onclick', prop['onclick']);
 		}
-		ax.setAttribute('href', 'javascript:null');
+		//ax.setAttribute('href', 'javascript:null');
 		el.appendChild(ax);
 		
 		return el;
@@ -909,14 +909,15 @@ var Framework7UI  = function () {
 					  
 				} else {
 					var inp = this.element('input', id+'-listel-'+x+'input');
-					var inptype = 'text';
+					//var inptype = 'text';
 					var placeholder = 'Placeholder';
 					
 					inp.setAttribute('type', inptype);
 					if (inpEl['placeholder']) {
 						placeholder = inpEl['placeholder'];
+						inp.setAttribute('placeholder', placeholder);
 					}	
-					inp.setAttribute('placeholder', placeholder);
+					inp.setAttribute('required', 'true');
 					iteminp.appendChild(inp);
 				}
 			}	
@@ -1088,7 +1089,6 @@ var Framework7UI  = function () {
 	    									loginFields); 
 	    	
 	    	
-	    	pgcont.appendChild(this.p(null, '<BR>'));
 	    	pgcont.appendChild(this.p(null, '<BR>'));
 	    	pgcont.appendChild(dlogin);
 	    	pgcont.appendChild(tblview);
